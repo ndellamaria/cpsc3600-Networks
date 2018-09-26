@@ -42,11 +42,14 @@ print("result: {}".format(result))
 # You need to handle two types of responses: 200 OK responses, and 404 Not Found responses
 # Check to see which response was returned by the server and handle it appropriately
 # Complete this code
-code = result.split()[1]
+code = result.split()[1].decode()
 print("code: {}".format(code))
 if code == "200":
 	# download file
+	file = clientSocket.recv(2048)
+	f.write(file)
 	print("file successes")
+	f.close()
 elif code == "404":
 	print("file not found")
 else:
