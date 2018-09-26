@@ -9,7 +9,7 @@ import sys              # In order to terminate the program
 
 # Prepare a sever socket
 # Complete this code
-serverPort = 90
+serverPort = 80
 serverSocket = socket(AF_INET, SOCK_STREAM)
 serverSocket.bind(('', serverPort))
 serverSocket.listen(1)
@@ -22,6 +22,8 @@ while True:
     try:
         message = connectionSocket.recv(1024)
 
+        print("message: {}".format(message.decode()))
+        
         # Find the filename of the requested file
         filename = message.split()[1]
        
@@ -37,8 +39,8 @@ while True:
 
         #Send one HTTP header line into socket
         # Complete this code
-        connectionSocket.send(("HTTP/1.1 200 OK Last Modified: 7\r\n\r\n").encode('utf-8'))
-        #connectionSocket.send(("Last Modified: {}\r\n".format(last_modified)).encode('utf-8'))
+        connectionSocket.send(("HTTP/1.1 200 OK\r\n").encode('utf-8'))
+        connectionSocket.send(("Last Modified: {}\r\n\r\n".format(last_modified)).encode('utf-8'))
 
         #Send the content of the requested file to the client
         for i in range(0, len(outputdata)):
