@@ -28,31 +28,31 @@ print("server_host: " + str(args.filename))
 
 clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.connect((args.server_host, args.server_port))
+
 request = "GET /{} HTTP/1.1\r\n\r\n".format(args.filename)
-
-print(request)
-
 clientSocket.send(request.encode())
 
 # Get the status line
 result = clientSocket.recv(2048)
-# result.decode()
-print("result: {}".format(result))
+print(result.decode())
 
 # You need to handle two types of responses: 200 OK responses, and 404 Not Found responses
 # Check to see which response was returned by the server and handle it appropriately
 # Complete this code
 code = result.split()[1].decode()
-print("code: {}".format(code))
+
 if code == "200":
-	# download file
-	file = clientSocket.recv(2048)
-	f.write(file)
-	print("file successes")
+	print("Downloading file")
+	with open('web file', 'w') as f:
+		# download file
+		file = clientSocket.recv(2048)
+		f.write(file.decode())
+		print(file.decode())
+		print("File successes")
 	f.close()
 elif code == "404":
-	print("file not found")
+	print("File not found")
 else:
-	print("unrecognized response code")
+	print("Unrecognized response code")
 
 clientSocket.close()
