@@ -34,7 +34,6 @@ clientSocket.send(request.encode())
 
 # Get the status line
 result = clientSocket.recv(2048)
-print(result.decode())
 
 # You need to handle two types of responses: 200 OK responses, and 404 Not Found responses
 # Check to see which response was returned by the server and handle it appropriately
@@ -42,17 +41,20 @@ print(result.decode())
 code = result.split()[1].decode()
 
 if code == "200":
+	print(result.decode())
 	print("Downloading file")
-	with open('web file', 'w') as f:
-		# download file
-		file = clientSocket.recv(2048)
-		f.write(file.decode())
-		print(file.decode())
-		print("File successes")
+	with open('output_file', 'wb') as f:
+		while(True):
+			file = clientSocket.recv(1024)
+			if not file:
+				break
+			f.write(file)
 	f.close()
 elif code == "404":
-	print("File not found")
+	print(result.decode())
+	#print("File not found")
 else:
-	print("Unrecognized response code")
+	print("Unrecognized response code: ")
+	print(result.decode())
 
 clientSocket.close()
